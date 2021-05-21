@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Cart {
     private boolean payed;
 
     public Cart(){
-        shoppingList = Collections.emptyList();
+        shoppingList = new ArrayList<>();
         payed = false;
     }
 

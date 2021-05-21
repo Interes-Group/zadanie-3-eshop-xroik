@@ -35,7 +35,7 @@ public class CartService implements  ICartService {
     }
 
     @Override
-    public Cart addNewProduct(ListProductRequest productToAdd,int id) {
+    public Cart addNewProduct(ListProduct productToAdd,int id) {
         Cart cart = this.repository.findById(id).orElseThrow();
         if(cart.isPayed()){
             return null;
@@ -48,7 +48,7 @@ public class CartService implements  ICartService {
                 return null;
             }
             else{
-                //cart.getShoppingList().add(new ListProduct(productToAdd)); Request processing failed; nested exception is java.lang.UnsupportedOperationException
+                cart.getShoppingList().add(productToAdd);
                 productOnStorage.setAmount(productOnStorage.getAmount() - productToAdd.getAmount());
                 this.repository.save(cart);
                 this.productRepository.save(productOnStorage);

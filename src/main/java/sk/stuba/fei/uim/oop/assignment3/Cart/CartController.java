@@ -23,7 +23,7 @@ public class CartController {
         this.service.deleteCart(id);
     }
     @PostMapping("/{ID}/add")
-    public CartResponse add(@RequestBody ListProductRequest request,@PathVariable("ID")int id){
+    public CartResponse add(@RequestBody ListProduct request,@PathVariable("ID")int id){
     return new CartResponse(this.service.addNewProduct(request,id));
     }
     @GetMapping("/{ID}/pay")
