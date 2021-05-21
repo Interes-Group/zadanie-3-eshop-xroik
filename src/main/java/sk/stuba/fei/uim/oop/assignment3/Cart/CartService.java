@@ -66,10 +66,12 @@ public class CartService implements  ICartService {
                     }
                     this.repository.save(cart);
                 }
-                cart.getShoppingList().add(productToAdd);
-                productOnStorage.setAmount(productOnStorage.getAmount() - productToAdd.getAmount());
-                this.repository.save(cart);
-                this.productRepository.save(productOnStorage);
+                else {
+                    cart.getShoppingList().add(productToAdd);
+                    productOnStorage.setAmount(productOnStorage.getAmount() - productToAdd.getAmount());
+                    this.repository.save(cart);
+                    this.productRepository.save(productOnStorage);
+                }
                 return cart;
             }
         }
