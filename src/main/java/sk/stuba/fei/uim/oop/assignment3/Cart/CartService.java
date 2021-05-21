@@ -2,8 +2,11 @@ package sk.stuba.fei.uim.oop.assignment3.Cart;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
 import sk.stuba.fei.uim.oop.assignment3.Product.Product;
 import sk.stuba.fei.uim.oop.assignment3.Product.ProductRepository;
 
@@ -20,6 +23,7 @@ public class CartService implements  ICartService {
         newCart = this.repository.save(newCart);
         return newCart;
     }
+
 
     @Override
     public Cart getById(int id) {
@@ -38,16 +42,30 @@ public class CartService implements  ICartService {
     public Cart addNewProduct(ListProduct productToAdd,int id) {
         Cart cart = this.repository.findById(id).orElseThrow();
         if(cart.isPayed()){
-            return null;
-            // throw isPayesException
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+
         else{
+            boolean found = false;
             Product productOnStorage = productRepository.findById(productToAdd.getProductId()).get();
+            for(ListProduct product:cart.getShoppingList()){
+                if(product.getProductId() == productToAdd.getProductId()){
+                    found = true;
+                }
+            }
             if(productOnStorage.getAmount() < productToAdd.getAmount()){
-                //throw notEnoughAmountException
-                return null;
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
             }
             else{
+                if(found){
+                    for(ListProduct product:cart.getShoppingList()){
+                        if(product.getProductId() == productToAdd.getProductId()){
+                            product.setAmount(product.getAmount() + productToAdd.getAmount());
+                            break;
+                        }
+                    }
+                    this.repository.save(cart);
+                }
                 cart.getShoppingList().add(productToAdd);
                 productOnStorage.setAmount(productOnStorage.getAmount() - productToAdd.getAmount());
                 this.repository.save(cart);
@@ -57,17 +75,12 @@ public class CartService implements  ICartService {
         }
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    void isPayedException() {
-
-    }
 
     @Override
     public  String pay(int id){
         Cart cart = repository.findById(id).orElseThrow();
         if(cart.isPayed()){
-           isPayedException();
-           return null;
+          throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         else{
             double sum;
