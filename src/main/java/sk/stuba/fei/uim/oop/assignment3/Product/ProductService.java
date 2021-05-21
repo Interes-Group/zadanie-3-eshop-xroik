@@ -1,7 +1,9 @@
 package sk.stuba.fei.uim.oop.assignment3.Product;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import sk.stuba.fei.uim.oop.assignment3.Product.Product;
 import sk.stuba.fei.uim.oop.assignment3.Product.ProductRepository;
 import sk.stuba.fei.uim.oop.assignment3.Product.ProductRequest;
@@ -56,5 +58,14 @@ public class ProductService implements IProductService {
     public void delete(int id){
        Product productToDelete = getById(id);
        this.repository.deleteById(id);
+    }
+    public AmountClass addAmount(ProductRequest request, int id){
+        Product productToUpdate = getById(id);
+        productToUpdate.setAmount(request.getAmount());
+        productToUpdate = this.repository.save(productToUpdate);
+        return  new AmountClass(productToUpdate.getAmount());
+    }
+    public AmountClass getAmount(int id){
+        return new AmountClass(this.repository.findById(id).orElseThrow().getAmount());
     }
 }

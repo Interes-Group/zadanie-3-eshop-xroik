@@ -8,4 +8,6 @@ public interface IProductService {
     Product getById(int id);
     Product update(ProductRequest request, int id);
     void delete(int id);
+    AmountClass getAmount(int id);
+    AmountClass addAmount(ProductRequest request, int id);
 }

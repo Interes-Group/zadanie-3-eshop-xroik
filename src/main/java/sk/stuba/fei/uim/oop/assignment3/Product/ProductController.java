@@ -1,6 +1,7 @@
 package sk.stuba.fei.uim.oop.assignment3.Product;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class ProductController {
         return this.service.getAll().stream().map(product -> new ProductResponse(product)).collect(Collectors.toList());
      }
      @PostMapping()
+     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponse addProduct(@RequestBody ProductRequest request){
     return new ProductResponse(this.service.create(request));
      }
@@ -32,5 +34,14 @@ public class ProductController {
      @DeleteMapping("/{ID}")
     public void delete(@PathVariable("ID")int id){
         this.service.delete(id);
+     }
+     @PostMapping("/{ID}/amount")
+    public AmountClass addAmount(@RequestBody ProductRequest request, @PathVariable("ID") int id){
+        this.service.addAmount(request,id);
+        return getAmount(id);
+     }
+     @GetMapping("/{ID}/amount")
+    public AmountClass getAmount(@PathVariable("ID") int id){
+        return  new AmountClass(this.service.getAmount(id).getAmount());
      }
  }
