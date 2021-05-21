@@ -8,9 +8,9 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 public class AmountClass {
-    Integer amount;
+    Long amount;
 
-    public AmountClass(Integer amount) {
+    public AmountClass(Long amount) {
         this.amount = amount;
     }
 }

@@ -61,7 +61,7 @@ public class ProductService implements IProductService {
     }
     public AmountClass addAmount(ProductRequest request, int id){
         Product productToUpdate = getById(id);
-        productToUpdate.setAmount(request.getAmount());
+        productToUpdate.setAmount(productToUpdate.getAmount() + request.getAmount());
         productToUpdate = this.repository.save(productToUpdate);
         return  new AmountClass(productToUpdate.getAmount());
     }

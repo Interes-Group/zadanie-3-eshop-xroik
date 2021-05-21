@@ -37,8 +37,7 @@ public class ProductController {
      }
      @PostMapping("/{ID}/amount")
     public AmountClass addAmount(@RequestBody ProductRequest request, @PathVariable("ID") int id){
-        this.service.addAmount(request,id);
-        return getAmount(id);
+        return this.service.addAmount(request,id);
      }
      @GetMapping("/{ID}/amount")
     public AmountClass getAmount(@PathVariable("ID") int id){
