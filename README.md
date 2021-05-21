@@ -1,3 +1,4 @@
+#Error in line 51 CartService, cant add products to cart in tests. I tried to debug this error, but everything executes fine, working in Postman as well. Just crushes in tests
 # Zadanie 3 - Eshop
 B-OOP 2021
 
